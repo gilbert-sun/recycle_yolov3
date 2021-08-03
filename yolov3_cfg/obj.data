@@ -1,0 +1,5 @@
+classes= 7
+train  = /home/pet/Documents/recycle_yolo/yolov3_cfg/train.txt
+valid  = /home/pet/Documents/recycle_yolo/yolov3_cfg/test.txt
+names = /home/pet/Documents/recycle_yolo/yolov3_cfg/obj.names
+backup = /home/pet/Documents/recycle_yolo/yolov3_cfg/weights/

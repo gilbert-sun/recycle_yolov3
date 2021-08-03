@@ -1,0 +1,47 @@
+# ignore exec file
+darknet
+
+# Source for the following rules: https://raw.githubusercontent.com/github/gitignore/master/Python.gitignore
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.o
+*.dSYM
+*.csv
+*.out
+*.so
+mnist/
+caffe/
+grasp/
+images/
+opencv/
+convnet/
+decaf/
+submission/
+build/darknet/*
+!build/darknet/YoloWrapper.cs
+.fuse*
+unnecessary/
+compare*/
+
+
+# OS Generated #
+.DS_Store*
+thumbs.db
+Icon?
+Thumbs.db
+*.swp
+.~
+
+# python virtualenv
+py36/
+venv/
+venv3/
+
+
+# IDE
+.vscode/
+.idea/

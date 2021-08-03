@@ -1,0 +1,24 @@
+# Git
+.git
+.gitignore
+
+# Docker
+.docker
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*/__pycache__/
+*/*/__pycache__/
+*/*/*/__pycache__/
+*.py[cod]
+*/*.py[cod]
+*/*/*.py[cod]
+*/*/*/*.py[cod]
+
+# Virtual environment
+venv36/
+venv/
+
+# IDE
+.idea
+.vscode
