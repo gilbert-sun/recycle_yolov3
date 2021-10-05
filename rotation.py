@@ -6,6 +6,38 @@ import argparse
 import parameters
 
 
+# parsing
+parser = argparse.ArgumentParser()
+parser.add_argument("-i",
+					dest="dataset_input",
+                    help="directory containing data you want to rotate.",
+                    default="/media/e200/新增磁碟區1/mnt2/ch_sour_predict")
+parser.add_argument("-o",
+                    dest="dataset_output",
+                    help="directory to store generated data. this directory will be made automatically.",
+                    default="/media/e200/DATA/mnt/rotCh")
+parser.add_argument("-t",
+                    dest="time_interval",
+                    help="time interval to control speed of displaying images.",
+                    default=0,
+                    type=int)
+parser.add_argument("-r",
+                    dest="ratio",
+                    help="ratio for ignoring bounding box near the edges of image.",
+                    default=0.8,
+                    type=float)
+parser.add_argument("-a",
+                    dest="angle_interval",
+                    help="angle interval for rotating.",
+                    default=10,
+                    type=int)
+parser.add_argument("-s",
+                    dest="show_image",
+                    action="store_true",
+                    help="instead of saving data, showing images with bounding boxes without saving.",
+                    default=False)
+args = parser.parse_args()
+
 def mkdir_p(dirname):
     if not os.path.isdir(dirname):
         os.mkdir(dirname)
@@ -48,39 +80,6 @@ def show(image,time_interval):
     key = cv2.waitKey(time_interval)
     if key == ord("q"):
         quit()
-
-
-# parsing
-parser = argparse.ArgumentParser()
-parser.add_argument("-i",
-					dest="dataset_input",
-                    help="directory containing data you want to rotate.",
-                    default="/media/e200/新增磁碟區1/mnt2/ch_sour_predict")
-parser.add_argument("-o",
-                    dest="dataset_output",
-                    help="directory to store generated data. this directory will be made automatically.",
-                    default="/media/e200/DATA/mnt/rotCh")
-parser.add_argument("-t",
-                    dest="time_interval",
-                    help="time interval to control speed of displaying images.",
-                    default=0,
-                    type=int)
-parser.add_argument("-r",
-                    dest="ratio",
-                    help="ratio for ignoring bounding box near the edges of image.",
-                    default=0.8,
-                    type=float)
-parser.add_argument("-a",
-                    dest="angle_interval",
-                    help="angle interval for rotating.",
-                    default=10,
-                    type=int)
-parser.add_argument("-s",
-                    dest="show_image",
-                    action="store_true",
-                    help="instead of saving data, showing images with bounding boxes without saving.",
-                    default=False)
-args = parser.parse_args()
 
 #python3 rotation.py -a 180 -i "/media/e200/新增磁碟區1/mnt2/ch_sour_predict" -o "/media/e200/DATA/mnt/rotCh"
 

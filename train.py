@@ -15,34 +15,6 @@ from os.path import basename
 
 #--------------------------------------------------------------------
 folderCharacter = "/"  # \\ is for windows
-# xmlFolder = "/media/e200/BackupUbuntu/Documents/makeYOLOv3/cloth5/labels"
-# labelFolder = "/media/e200/BackupUbuntu/Documents/makeYOLOv3/cloth5/labels"
-# imgFolder = "/media/e200/BackupUbuntu/Documents/makeYOLOv3/cloth5/images"
-# saveYoloPath = "/media/e200/BackupUbuntu/Documents/makeYOLOv3/cloth5/yolov4"
-# classList = { "0_Deep_ST":0, "1_Light_ST": 1 , "2_Deep_LT":2, "3_Light_LT": 3 ,"4_Deep_SU":4, "5_Light_SU": 5 ,"6_Deep_LU":6, "7_Light_LU": 7  }
-
-# labelFolder = "/media/e200/新增磁碟區/scene/labels"
-# imgFolder = "/media/e200/新增磁碟區/scene/images"
-
-# classList = {"oven": 0, "sink": 1, "refrigerator": 2, "sofa": 3,"TV_monitor": 4, "chair": 5,"bed": 6,
-#              "counter_top": 7, "range_hood": 8, "gas_stove": 9, "electric_pot": 10, "electric_kettle": 11,
-#              "coffee_table": 12, "dvd_player": 13, "TV_remote": 14, "vanity": 15, "pillow":16, "quilt":17,
-#              "closet": 18, "nightstand": 19}
-
-
-# Deep_ST
-# Light_ST
-# Deep_LT
-# Light_LT
-# Deep_SU
-# Light_SU
-# Deep_LU
-# Light_LU
-
-# #---------------------------------------------------------------------
-#
-# if not os.path.exists(saveYoloPath):
-#     os.makedirs(saveYoloPath)
 
 def downloadPretrained(url):
     import wget
@@ -71,85 +43,10 @@ def transferYolo( xmlFilepath, imgFilepath, labelGrep=""):
     totalH = 0
     countLabels = 0
 
-    # tmpArrays = labelXML.getElementsByTagName("filename")
-    # for elem in tmpArrays:
-    #     filenameImage = elem.firstChild.data
-    #
-    # tmpArrays = labelXML.getElementsByTagName("name")
-    # for elem in tmpArrays:
-    #     labelName.append(str(elem.firstChild.data))
-    #
-    # tmpArrays = labelXML.getElementsByTagName("xmin")
-    # for elem in tmpArrays:
-    #     labelXmin.append(int(elem.firstChild.data))
-    #
-    # tmpArrays = labelXML.getElementsByTagName("ymin")
-    # for elem in tmpArrays:
-    #     labelYmin.append(int(elem.firstChild.data))
-    #
-    # tmpArrays = labelXML.getElementsByTagName("xmax")
-    # for elem in tmpArrays:
-    #     labelXmax.append(int(elem.firstChild.data))
-    #
-    # tmpArrays = labelXML.getElementsByTagName("ymax")
-    # for elem in tmpArrays:
-    #     labelYmax.append(int(elem.firstChild.data))
-    #
-    # yoloFilename = saveYoloPath + folderCharacter + img_filename + ".txt"
-    # #print("writeing to {}".format(yoloFilename))
-    #
-    # with open(yoloFilename, 'a') as the_file:
-    #     i = 0
-    #     for className in labelName:
-    #         if(className==labelGrep or labelGrep==""):
-    #             classID = classList[className]
-    #             x = (labelXmin[i] + (labelXmax[i]-labelXmin[i])/2) * 1.0 / img_w
-    #             y = (labelYmin[i] + (labelYmax[i]-labelYmin[i])/2) * 1.0 / img_h
-    #             w = (labelXmax[i]-labelXmin[i]) * 1.0 / img_w
-    #             h = (labelYmax[i]-labelYmin[i]) * 1.0 / img_h
-    #
-    #             the_file.write(str(classID) + ' ' + str(x) + ' ' + str(y) + ' ' + str(w) + ' ' + str(h) + '\n')
-    #             i += 1
-    #
-    # the_file.close()
-
-#---------------------------------------------------------------
-# fileCount = 0
-#
-# print("Step 1. Transfer VOC dataset to YOLO dataset.")
-# for file in os.listdir(imgFolder):
-#     filename, file_extension = os.path.splitext(file)
-#     file_extension = file_extension.lower()
-#
-#     if(file_extension == ".jpg" or file_extension==".png" or file_extension==".jpeg" or file_extension==".bmp"):
-#         imgfile = imgFolder + folderCharacter + file
-#         xmlfile = xmlFolder + folderCharacter + filename + ".xml"
-#
-#         if(os.path.isfile(xmlfile)):
-#             #print("id:{}".format(fileCount))
-#             #print("processing {}".format(imgfile))
-#             #print("processing {}".format(xmlfile))
-#             fileCount += 1
-#
-#             transferYolo( xmlfile, imgfile, "")
-#             copyfile(imgfile, saveYoloPath + folderCharacter + file)
-#
-# print("        {} images transered.".format(fileCount))
-
 
 if __name__ == '__main__':
     # step1 ---------------------------------------------------------------
 
-    # if not os.path.exists(saveYoloPath):
-        # os.makedirs(saveYoloPath)
-        # print(" saveYolo+ img + label ")
-    # for file in os.listdir(imgFolder):
-    #     imgfile = imgFolder + folderCharacter + file
-    #     #print (file, ":",imgfile )
-    #     copyfile(imgfile, saveYoloPath + folderCharacter + file )
-    # for file in os.listdir(labelFolder):
-    #     labelfile = labelFolder + folderCharacter + file
-    #     copyfile(labelfile, saveYoloPath + folderCharacter + file)
 
     # step2 ---------------------------------------------------------------
     fileList = []
@@ -228,27 +125,10 @@ if __name__ == '__main__':
 
     print("Step 4. Start to train the YOLO model.")
 
-    # if not os.path.exists("darknet53.conv.74"):
-    #     downloadPretrained("https://pjreddie.com/media/files/darknet53.conv.74")
-
-    # classNum = len(parameters.classList)
-    # filterNum = (classNum + 5) * 3
-
-    # if(parameters.modelYOLO == "yolov3"):
-    #     fileCFG = "yolov3.cfg"
-
-    # else:
-    #     fileCFG = "yolov3-tiny.cfg"
-
-    # with open("cfg"+folderCharacter+fileCFG) as file:
-    #     file_content = file.read()
 
     classNum = len(parameters.classList)
     filterNum = (classNum + 5) * 3
-    # if "yolov2" in parameters.cfgFolder and "tiny" in parameters.cfgFolder: 
-    #     fileCFG = "yolov2-tiny.cfg"
-    # elif "yolov2" in parameters.cfgFolder:
-    #     fileCFG = "yolov2.cfg"
+
     fileCFG = "yolov3.cfg"
     
 
@@ -270,14 +150,8 @@ if __name__ == '__main__':
     file.close()
 
 
-
-#================================================
-    
-    # if "yolov2" in parameters.cfgFolder and "tiny" in parameters.cfgFolder:
-    #     executeCmd = parameters.darknetEcec + " detector train " + parameters.cfgFolder + folderCharacter + "obj.data " + parameters.cfgFolder + folderCharacter + 'yolov2-tiny.cfg' + " yolov2-tiny.conv.13"
-    # elif "yolov2" in parameters.cfgFolder:
-    #     executeCmd = parameters.darknetEcec + " detector train " + parameters.cfgFolder + folderCharacter + "obj.data " + parameters.cfgFolder + folderCharacter + 'yolov2.cfg' + " yolov2.conv.23"
     executeCmd = "{} detector train {} {} yolov3.conv.75 -gpus {}".format(parameters.darknetEcec, (parameters.cfgFolder + folderCharacter + "obj.data"), (parameters.cfgFolder + folderCharacter + 'yolov3.cfg'), parameters.num_gpu)
+    #executeCmd = "{} detector train {} {} {} -gpus {}".format(parameters.darknetEcec, (parameters.cfgFolder + folderCharacter + "obj.data"), (parameters.cfgFolder + folderCharacter + 'yolov3.cfg'), (parameters.cfgFolder + folderCharacter + 'weights/yolov3.backup'),parameters.num_gpu)
     #executeCmd = parameters.darknetEcec + " detector train " + parameters.cfgFolder + folderCharacter + "obj.data " + parameters.cfgFolder + folderCharacter + fileCFG + " /media/e200/新增磁碟區/Documents/makeYOLOv3_fall/fall_cfg/weights/yolov3.backup"
 
 #
@@ -294,5 +168,4 @@ if __name__ == '__main__':
     call(executeCmd.split())
 
     time.sleep(3)
-    # performance.main()
-    performance.perform()
+    performance.main()

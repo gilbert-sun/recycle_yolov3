@@ -1,4 +1,7 @@
+#!/usr/bin/env python
 import os
+#===================================================================================
+#-----> default setting
 darknetEcec = "/home/e200/darknet/darknet" # or /home/shyechih/yolo_darknet/darknet
 imageYoloPath = "/media/e200/DATA/mnt/10002/images"#"/media/e200/DATA/20190719_gilbert_full/final_test/total/images"
 labelYoloPath = "/media/e200/DATA/mnt/10002/labels"#"/media/e200/DATA/20190719_gilbert_full/final_test/total/labels"
@@ -17,7 +20,8 @@ classList = {"P":0,"O":1, "S": 2, "C":3, "Ot":4, "Ch":5, "T":6}
 testRatio = 0.1
 threshValue = 0.7
 
-#-------------- yolov3 ---------------
+#===================================================================================
+#-----> yolov3.cfg setting
 cfgFolder = "/media/e200/新增磁碟區1/Documents/makeYOLOv3_pet" + "/yolov3_cfg"
 
 cfg_obj_names = "obj.names"
@@ -40,29 +44,8 @@ wrong_txt = outputPath +"/wrong.txt"
 accuracy_path = outputPath+ "/accuracy"
 acc_txt = 'acc.txt'
 
-
-# #---->video2img
-# video2img_sour = "class_soy.avi"
-# out_frameID = 550
-# out_frame = True
-# video2img_out_imgPath = "/media/e200/DATA/mnt/Soy/images"
-# video2img_out_labelPath = "/media/e200/DATA/mnt/Soy/labels"
-# video2img_out_predictPath = "/media/e200/新增磁碟區1/mnt2/soy_sour_predict/predict"
-# video2img_out_imgKind = os.path.join(video2img_out_imgPath , "soy_")
-# video2img_List = "iii.txt"
-
-# #---->parser_Prediction
-# classType = "2 "
-
-# #---->rotate_dataAugment---->
-# dataset_input = "/media/e200/DATA/mnt/Soy"
-# dataset_output = "/media/e200/DATA/mnt/rotSoy20"
-# angle_interval = 20
-# show_image = False
-
-
 #===================================================================================
-#---->video2img
+#----> video2img
 video2img_sour = "class_soy.avi"
 out_frameID = 50
 out_frame = True
@@ -72,11 +55,12 @@ video2img_out_predictPath = "/media/e200/新增磁碟區1/mnt2/soy_sour_predict/
 video2img_out_imgKind = os.path.join(video2img_out_imgPath , "soy_")
 video2img_List = "soy.txt"
 
+#===================================================================================
 #---->parser_Prediction
 classType = "2 "
 
 #===================================================================================
-#---->rotate_dataAugment---->
+#----> rotate_dataAugment---->
 dataset_input = "/media/e200/DATA/mnt/Flat"
 dataset_output = "/media/e200/DATA/mnt/rotFlat20"
 angle_interval = 20

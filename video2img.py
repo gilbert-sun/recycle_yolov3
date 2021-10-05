@@ -79,119 +79,6 @@ def sort_indexes(nwCenters):
 
     return indexes
 
-def process(img):
-    '''
-        Process a image throught the YOLO net and runs the postprocess
-        Inputs:
-            img -> An image
-    '''
-    global net, ln, conf,rs_config,counter1
- 
-    blob = cv.dnn.blobFromImage(img, 1/255.0, (320, 320), swapRB=True, crop=False)
-    net.setInput(blob)
-    outputs = net.forward(ln)
-    outputs = np.vstack(outputs)
-
-    # IMPORTANT Run post process
-    post_process(img, outputs, conf)
-    cv.putText(img,str(counter1),(550,30),0,1,(0,255,255),2)
-    cv.imshow('RealSenseRGB1',  img) 
-
-def post_process(img, outputs, conf):
-    global colors, clases, centers,rs_config
-
-    H, W = img.shape[:2]
-
-    boxes = []
-    confidences = []
-    classIDs = []
-    centers = []
-
-    # IMPORTANT From YOLO output to boxes, confidences, classes, centers
-    for output in outputs:
-        scores = output[5:]
-        classID = np.argmax(scores)
-        confidence = scores[classID]
-
-        if confidence > conf:
-            x, y, w, h = output[:4] * np.array([W, H, W, H])
-            # p0 = int(x - w//2), int(y - h//2)
-            # boxes.append([*p0, int(w), int(h)])
-
-            boxes.append([int(x - w//2), int(y - h//2), int(w), int(h)])
-            confidences.append(float(confidence))
-            classIDs.append(classID)
-            centers.append([int(x),int(y)]) # IMPORTANT Getting object centers
-
-    nwboxes = []
-    nwConfidences = []
-    nwClassIDs = []
-    nwCenters = []
-    nw2Centers = []
-
-    indexes = get_unrepeated_index(centers)
-    for i in indexes:
-        nwboxes.append(boxes[i])
-        nwConfidences.append(confidences[i])
-        nwClassIDs.append(classIDs[i])
-        nwCenters.append(centers[i])
-
-    boxes.clear()
-    confidences.clear()
-    classIDs.clear()
-    centers.clear()
-
-    indexes = sort_indexes(nwCenters)
-    for i in indexes:
-        boxes.append(nwboxes[i])
-        confidences.append(nwConfidences[i])
-        classIDs.append(nwClassIDs[i])
-        centers.append(nwCenters[i])
-        nw2Centers.append(nwCenters[i])
-
-    indices = cv.dnn.NMSBoxes(boxes, confidences, conf, conf-0.1)
-
-    if len(indices) > 0:
-        timestamp = time.time()
-        for i in indices.flatten():
-            Objection_vec=[]
-            # rs_config.D435_para.refresh_mat()
-            (x, y) = (boxes[i][0], boxes[i][1])
-            (w, h) = (boxes[i][2], boxes[i][3])
-            # z = Objection(Rcet(x,x+w,y,y+h),classes[classIDs[i]])
-            color = [int(c) for c in colors[classIDs[i]]]
-            cv.rectangle(img, (x, y), (x + w, y + h), color, 2)
-            text = "{}: {:.4f}".format(classes[classIDs[i]], confidences[i])
-            labelSize, baseLine = cv.getTextSize(text, cv.FONT_HERSHEY_SIMPLEX, 0.5, 1)
-            top = max(y, labelSize[1])
-
-            #========================================================================gilbert_start
-            t, _ = net.getPerfProfile()
-            fps = 1000 / (t * 1000.0 / cv.getTickFrequency())
-            label = 'FPS: %.2f' % fps
-            cv.putText(img, label, (25, 25), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0,255),2)
-            #========================================================================gilbert_end
-
-            cv.rectangle(img, (x, y - labelSize[1]), (x + labelSize[0], y + baseLine), (255, 255, 255), cv.FILLED)
-            cv.putText(img, text, (x, y), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,0), 1)
-            cv.circle(img, tuple(centers[i]), 5, color, -1)  # IMPORTANT Drawing centers
-
-            #========================================================================gilbert_start
-            Position='(%d %d %d %s)' %(centers[i][0],centers[i][1],0 , classes[classIDs[i]] )
-            cv.putText(img, Position, (int(centers[i][1]), int(centers[i][0])), cv.FONT_HERSHEY_SIMPLEX, 0.8, color,2)
-            old_x = int(centers[i][0])
-            old_y = int(centers[i][1])
-            zDepth = 0
-            centers[i].clear()
-            nw2Centers[i].clear()
-            centers[i]= [old_x,old_y,zDepth, str(classes[classIDs[i]]),str(('%.3f' % confidences[i]))+str("%")]
-            nw2Centers[i]= [old_x,old_y,zDepth, str(classes[classIDs[i]]),str(('%.3f' % confidences[i]))+str("%")]
-
-        nw2Centers.insert(0,timestamp)
-        centers.insert(0,timestamp)
-        #========================================================================gilbert_end
-        # Put efficiency information.
-
 def load_detector():
     '''
         Initializes variables and YOLO net
@@ -308,7 +195,6 @@ def run():
     global rs_config,counter1,old_timetag_conf
     counter1 = 0
     old_timetag_conf = int(datetime.datetime.now().timestamp() * 1000)
-    # rs_config.pipeline.start(rs_config.config)
     #========================================================================gilbert_end
     load_detector()
 
@@ -337,9 +223,7 @@ def run():
                 counter1 +=1
 
                 # print('Server connected {}:'.format(counter1))
-     
                 # process(img)
-
                 # data = json.dumps(centers).encode('utf-8') # IMPORTANT Prepare data to send
 
                 if parameters.out_frame == False:

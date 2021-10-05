@@ -7,44 +7,7 @@ import socket
 import json
 import time,os,sys
 import datetime,json
-#========================================================================gilbert_start
 
-def switch(var, x=None):
-    return {
-        '.P': lambda x: 'P',
-        '.COLOR': lambda x: 'COLOR',
-        '.SOY': lambda x: 'SOY',
-        '.OIL': lambda x: 'OIL',
-        '.TRAY': lambda x: 'TRAY',
-        '.CH': lambda x: 'CH',
-        '.OTHER': lambda x: 'OTHER',
-        '.PET': lambda x: 'PET',
-        '.PP': lambda x: 'PP',
-        '.PS': lambda x: 'PS',
-        '.PLA': lambda x: 'PLA',
-        '.PC': lambda x: 'PC',
-        '.PVC': lambda x: 'PVC',
-        '.RobotArm': lambda x: 'RobotArm',
-        '.VisionSys': lambda x: 'VisionSys',
-        '.ConveySys': lambda x: 'ConveySys',
-        '.ControSys': lambda x: 'ControSys',
-        '.good': lambda x: 'good',
-        '.bad': lambda x: 'bad',
-        'P': lambda x: 0,
-        'Oil': lambda x:1,
-        'Soy': lambda x: 2,
-        'Color': lambda x: 3,
-        'Other': lambda x: 4,
-        'Ch': lambda x: 5,
-        'Tray': lambda x: 6,
-    }[str(var)](x)
-# path = "/rms_root/catkin_ws/src/rms_pet_yolov3/scripts"
-# import sys
-# sys.path.append(path)
-# import realsenseconfig as rs_config
-# from Objection import Objection,Rcet
-
-#========================================================================gilbert_end
 def trackbarConfidence(x):
     '''
         Dynamically set YOLO confidence factor
@@ -247,23 +210,10 @@ def load_detector():
     ### YOLO ###
     conf = 0.1
     distThres = 10
-
-    # classes = open(r'models\classes.txt').read().strip().split('\n')#win10
     classes = open(r'./yolov3_cfg/obj.names').read().strip().split('\n')#ubuntu
-    # classes = open(r'/home/gilbert3/darknet/data/coco.names').read().strip().split('\n')
-    #classes = open(r'/media/gilbert3/mx500_1/Downloads/yuching7petv4/obj.names').read().strip().split('\n')
     np.random.seed(42)
     colors = np.random.randint(0, 255, size=(len(classes), 3), dtype='uint8')
-
-    # net = cv.dnn.readNetFromDarknet(r'models\yolov4-tiny.cfg', r'models\yolov4-tiny.weights')
-    # net = cv.dnn.readNetFromDarknet(r'models\yolov3.cfg', r'models\yolov3.weights')#win10
-
     net = cv.dnn.readNetFromDarknet(r'./yolov3_cfg/yolov3.cfg', r'./yolov3_cfg/weights/yolov3_final_0915.weights')#custom-yolov4-detector.weights')# ubuntu
-
-    # net = cv.dnn.readNetFromDarknet(r'./models/yolov4-custom.cfg', r'./models/yolov4-custom_best.weights')# ubuntu
-
-    # net = cv.dnn.readNetFromDarknet(r'/home/gilbert3/darknet/cfg/yolov3.cfg', r'/home/gilbert3/darknet/yolov3.weights')
-    #net = cv.dnn.readNetFromDarknet(r'/media/gilbert3/mx500_1/Downloads/yuching7petv4/yolov4-custom.cfg', r'/media/gilbert3/mx500_1/Downloads/yuching7petv4/weights/yolov4-custom_best.weights')
     net.setPreferableTarget(cv.dnn.DNN_TARGET_OPENCL)
     net.setPreferableBackend(cv.dnn.DNN_BACKEND_OPENCV)#DNN_BACKEND_CUDA)#CUDA / OPENCV DNN_BACKEND_INFERENCE_ENGINE  on Openvino
     net.setPreferableTarget(cv.dnn.DNN_TARGET_CPU) #CUDA / CPU
@@ -271,23 +221,6 @@ def load_detector():
 
     ln = net.getLayerNames()
     ln = [ln[i[0] - 1] for i in net.getUnconnectedOutLayers()]
-def readSink_confidence():
-    global old_timetag_conf,conf1
-    now_timetag1 = int(datetime.datetime.now().timestamp() * 1000) - 3000
-    if (now_timetag1 > old_timetag_conf):
-        try:
-            with open("C:/Users/e300/PetSinkSetting.json") as fs:
-                data = json.load(fs)
-                conf1[switch(data["SinkA_class"])] = 0.01 * data["SinkA_conf"]
-                conf1[switch(data["SinkB_class"])] = 0.01 * data["SinkB_conf"]
-                conf1[switch(data["SinkC_class"])] = 0.01 * data["SinkC_conf"]
-                conf1[switch(data["SinkD_class"])] = 0.01 * data["SinkD_conf"]
-                print(conf1)
-        except:
-            print("File not Found or Other Error!\n")
-            conf1 = [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5]
-            print(">",conf1)
-        old_timetag_conf = int(datetime.datetime.now().timestamp() * 1000)
 
 def run():
     '''
@@ -315,12 +248,6 @@ def run():
 
 
     if(True):
-        # s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        # s.connect((HOST, PORT))
-        # print('Server connected')
-        # cap = cv.VideoCapture(6)
-
-
 
         if not os.path.isfile('./test_case_0924-C.avi'):
             print("\n-------Err: no such file or sd-card not found!!\n")
